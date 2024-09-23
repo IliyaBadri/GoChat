@@ -1,0 +1,39 @@
+body.body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background-color: rgb(30, 32, 30);
+}
+
+body.body div.centered_box {
+    background-color: rgb(60, 61, 55);
+    color: rgb(236, 223, 204);
+    border-radius: 10px;
+    padding: 20px;
+}
+
+
+body.body div.centered_box div.error {
+    display: none;
+    color: rgb(255, 0, 0);
+}
+
+input.input {
+    background-color: rgb(236, 223, 204);
+    color: rgb(30, 32, 30);
+    padding: 10px;
+    width: 200px;
+    border-radius: 10px;
+    border: none;
+}
+
+button.button {
+    background-color: rgb(105, 117, 101);
+    color: rgb(236, 223, 204);
+    padding: 10px;
+    border-radius: 10px;
+}
+
