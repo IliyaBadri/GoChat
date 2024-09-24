@@ -1,6 +1,7 @@
 package main
 
 import (
+	"gochat/handlers"
 	"log"
 	"net/http"
 	"os"
@@ -26,5 +27,6 @@ func main() {
 	staticServer := http.FileServer(http.Dir("./static"))
 
 	http.Handle("/", staticServer)
+	http.HandleFunc("/api/session/", handlers.HandleSession)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
