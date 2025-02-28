@@ -20,7 +20,7 @@ func PathExists(path string) bool {
 
 func main() {
 	if !PathExists("./static") {
-		log.Fatal("No static path was found! Terminating.")
+		log.Fatal("[-] No static path was found! Terminating.")
 		return
 	}
 
