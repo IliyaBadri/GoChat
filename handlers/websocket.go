@@ -1,6 +1,9 @@
 package handlers
 
 import (
+	"encoding/json"
+	"gochat/globals"
+	"gochat/messages"
 	"log"
 	"net/http"
 
@@ -21,13 +24,27 @@ func HandleWebSocket(responseWriter http.ResponseWriter, request *http.Request) 
 	defer connection.Close()
 	connectionRemoteAddress := connection.RemoteAddr()
 	log.Printf("[+] New WebSocket connection established: (%s)", connectionRemoteAddress)
-	for {
-		messageType, data, err := connection.ReadMessage()
-		if err != nil {
-			log.Printf("[-] WebSocket read message error: (%s) : %s", connectionRemoteAddress, err)
-			break
-		}
 
+	messageType, data, err := connection.ReadMessage()
+
+	if err != nil {
+		log.Printf("[-] WebSocket read message error: (%s) : %s", connectionRemoteAddress, err)
+		return
+	}
+
+	var identificationMessage messages.IdentificationMessage
+	err = json.Unmarshal(data, &identificationMessage)
+	if err != nil {
+		log.Println("[-] WebSocket JSON decode error:", err)
+		connection.Close()
+		return
+	}
+
+	session := globals.Session{UserID: identificationMessage.UserID, Connection: connection}
+
+	globals.AddSession(&session)
+
+	for {
 		err = connection.WriteMessage(messageType, data)
 		if err != nil {
 			log.Printf("[-] WebSocket write message error: (%s) : %s", connectionRemoteAddress, err)
