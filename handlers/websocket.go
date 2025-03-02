@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"gochat/globals"
 	"gochat/messages"
+	"gochat/pools"
 	"log"
 	"net/http"
 
@@ -42,7 +43,7 @@ func HandleWebSocket(responseWriter http.ResponseWriter, request *http.Request) 
 
 	session := globals.Session{UserID: identificationMessage.UserID, Connection: connection}
 
-	globals.AddSession(&session)
+	pools.AddSession(&session)
 
 	for {
 		err = connection.WriteMessage(messageType, data)
