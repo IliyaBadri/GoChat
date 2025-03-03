@@ -5,6 +5,6 @@ import (
 )
 
 type Session struct {
-	UserID     string
+	ID         string
 	Connection *websocket.Conn
 }
