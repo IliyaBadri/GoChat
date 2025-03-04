@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"gochat/database"
+	"gochat/debugger"
 	"gochat/handlers"
 	"log"
 	"net/http"
@@ -22,6 +23,8 @@ func PathExists(path string) bool {
 }
 
 func main() {
+	logsDirectoryPath, _ := filepath.Abs("./logs")
+	debugger.Initialize(true, true, logsDirectoryPath)
 	serverPort := 8080
 	staticPath, _ := filepath.Abs("./static")
 	if !PathExists(staticPath) {

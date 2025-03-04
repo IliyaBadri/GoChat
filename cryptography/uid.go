@@ -35,3 +35,10 @@ func GenerateSafeToken(length int) string {
 
 	return string(byteSlice)
 }
+
+func GenerateFileID() string {
+	safeToken := GenerateSafeToken(10)
+	timestamp := time.Now().Unix()
+	ID := fmt.Sprintf("%d-%s", timestamp, safeToken)
+	return ID
+}
