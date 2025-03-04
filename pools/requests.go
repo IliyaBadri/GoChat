@@ -1,19 +1,24 @@
 package pools
 
 import (
-	"gochat/globals"
 	"gochat/signals"
 	"sync"
 )
 
-var requests sync.Map
-
-func AddRequest(request *globals.Request) {
-	requests.Store(request.ID, request)
-	signals.Session.Signal()
+type Request struct {
+	ID      string
+	Session *Session
+	Data    []byte
 }
 
-func RemoveRequest(request *globals.Request) {
+var requests sync.Map
+
+func AddRequest(request *Request) {
+	requests.Store(request.ID, request)
+	signals.Request.Signal()
+}
+
+func RemoveRequest(request *Request) {
 	requests.Delete(request.ID)
-	signals.Session.Signal()
+	signals.Request.Signal()
 }

@@ -1,5 +1,5 @@
 package network
 
 type IdentificationMessage struct {
-	UserID string `json:"userId"`
+	SessionID string `json:"sessionID"`
 }

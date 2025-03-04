@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
-	"gochat/globals"
+	"gochat/cryptography"
 	"gochat/network"
 	"gochat/pools"
 	"log"
@@ -11,18 +11,22 @@ import (
 	"github.com/gorilla/websocket"
 )
 
-func HandleWebSocket(responseWriter http.ResponseWriter, request *http.Request) {
+func WebSocket(responseWriter http.ResponseWriter, request *http.Request) {
+
 	websocketUpgrader := websocket.Upgrader{
 		CheckOrigin: func(checkOriginRequest *http.Request) bool {
 			return true
 		},
 	}
+
 	connection, err := websocketUpgrader.Upgrade(responseWriter, request, nil)
 	if err != nil {
-		log.Println("WebSocket upgrade error:", err)
+		log.Printf("[-] WebSocket upgrade error: %s", err)
 		return
 	}
+
 	connectionRemoteAddress := connection.RemoteAddr()
+
 	log.Printf("[+] New WebSocket connection established: (%s)", connectionRemoteAddress)
 
 	_, identificationRequestData, err := connection.ReadMessage()
@@ -35,13 +39,12 @@ func HandleWebSocket(responseWriter http.ResponseWriter, request *http.Request) 
 	var identificationMessage network.IdentificationMessage
 	err = json.Unmarshal(identificationRequestData, &identificationMessage)
 	if err != nil {
-		log.Println("[-] WebSocket JSON decode error:", err)
+		log.Printf("[-] WebSocket JSON decode error: (%s) : %s", connectionRemoteAddress, err)
 		connection.Close()
 		return
 	}
 
-	session := globals.Session{UserID: identificationMessage.UserID, Connection: connection}
-
+	session := pools.Session{ID: identificationMessage.SessionID, Connection: connection}
 	pools.AddSession(&session)
 
 	for {
@@ -51,16 +54,11 @@ func HandleWebSocket(responseWriter http.ResponseWriter, request *http.Request) 
 			break
 		}
 
-		var IncomingRequestMessage network.IncomingRequestMessage
-		err = json.Unmarshal(incomingRequestData, &IncomingRequestMessage)
-		if err != nil {
-			log.Println("[-] WebSocket JSON decode error:", err)
-			break
-		}
-
-		request := globals.Request{Session: &session, Data: data}
-		err = json.Unmarshal(data, &request.Message)
+		requestId := cryptography.GenerateURID()
+		websocketRequest := pools.Request{ID: requestId, Session: &session, Data: incomingRequestData}
+		pools.AddRequest(&websocketRequest)
 	}
+
 	pools.RemoveSession(&session)
 	connection.Close()
 }
