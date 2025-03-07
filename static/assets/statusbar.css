@@ -1,0 +1,16 @@
+div.status_bar {
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 50px;
+    padding-left: 10px;
+    background-color: rgb(60, 61, 55);
+    color: rgb(236, 223, 204);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    width: 100vw;
+    justify-content: start;
+    z-index: 1000;
+    overflow: hidden;
+}

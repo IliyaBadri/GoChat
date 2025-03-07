@@ -1,0 +1,8 @@
+@font-face {
+    font-family: OpenSans;
+    src: url(OpenSans.ttf);
+}
+
+* {
+    font-family: OpenSans;
+}

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#000000">
+    <meta name="description" content="GoChat project">
+    <link rel="stylesheet" href="/assets/main.css">
+    <link rel="stylesheet" href="/assets/statusbar.css">
+    <link rel="stylesheet" href="/fonts/font.css">
+    <title>GoChat</title>
+</head>
+<body class="body">
+    <div class="centered_box">
+        <h1>GoChat</h1>
+        <input class="input" id="username_input" placeholder="Enter username . . .">
+        <button class="button" id="login_button">Login</button>
+
+        <div class="error" id="instructions">
+            <h3>Your username must meet the requirements below:</h3>
+            <p>1. Containing only uppercase and lowercase characters and digits. (A-Z, a-z, 0-9)</p>
+            <p>2. Being more than 2 characters long and less than 30 characters long.</p>
+        </div>
+    </div>
+
+    <div class="status_bar">
+        <p id="statusbar">Status</p>
+    </div>
+    <script src="/scripts/status.js"></script>
+    <script src="/scripts/login.js"></script>
+</body>
+</html>
